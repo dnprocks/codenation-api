@@ -13,6 +13,8 @@ public interface LogErrorServiceInterface {
 
     Page<LogError> getLogErrors(Pageable pageable);
 
+    Page<LogError> getLogErrors(String filter, Pageable pageable);
+
     LogError saveLogError(LogErrorDTO logError, String requestIp);
 
     String fileLogError(Long id);

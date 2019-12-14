@@ -31,7 +31,15 @@ public class LogErrorResource {
     @GetMapping
     @ResponseStatus(HttpStatus.OK)
     public Page<LogError> getLogErrors(Pageable pageable) {
+
         return logErrorService.getLogErrors(pageable);
+    }
+
+    @GetMapping(params = { "filter" })
+    @ResponseStatus(HttpStatus.OK)
+    public Page<LogError> getLogErrors(@RequestParam("filter") String filter, Pageable pageable) {
+
+        return logErrorService.getLogErrors(filter, pageable);
     }
 
     @PostMapping

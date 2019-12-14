@@ -1,5 +1,8 @@
 package br.com.challenge.service.impl;
 
+import static org.springframework.data.domain.ExampleMatcher.GenericPropertyMatchers.contains;
+import static org.springframework.data.domain.ExampleMatcher.GenericPropertyMatchers.exact;
+
 import br.com.challenge.dto.LogErrorDTO;
 import br.com.challenge.entity.LogError;
 import br.com.challenge.entity.Users;
@@ -27,18 +30,35 @@ public class LogErrorService implements LogErrorServiceInterface {
 
     @Override
     public LogError getLogError(Long id) {
+
         return logErrorRepository.findById(id).orElse(null);
     }
 
     @Override
     public Page<LogError> getLogErrors(Pageable pageable) {
+
         return logErrorRepository.findAll(pageable);
     }
 
     @Override
-    public LogError saveLogError(LogErrorDTO logErrorModel, String requestIp) {
+    public Page<LogError> getLogErrors(String genericFilter, Pageable pageable) {
+
+        genericFilter = genericFilter.trim();
+
         Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
-        UserDetails userDetails = (UserDetails) authentication.getPrincipal();
+        UserDetails userDetails = (UserDetails)authentication.getPrincipal();
+        Users authenticatedUser = usersRepository.findByEmail(userDetails.getUsername());
+
+        Long userId = authenticatedUser.getId();
+
+        return logErrorRepository.findAllNonFiledUserLogErrorWithGenericFilter(userId, false, genericFilter, pageable);
+    }
+
+    @Override
+    public LogError saveLogError(LogErrorDTO logErrorModel, String requestIp) {
+
+        Authentication authentication = SecurityContextHolder.getContext().getAuthentication();
+        UserDetails userDetails = (UserDetails)authentication.getPrincipal();
         Users authenticatedUser = usersRepository.findByEmail(userDetails.getUsername());
 
         LogError logError = LogError.builder()
@@ -56,6 +76,7 @@ public class LogErrorService implements LogErrorServiceInterface {
 
     @Override
     public String fileLogError(Long id) {
+
         LogError logError = logErrorRepository.findById(id).orElse(null);
         if (logError == null){
             return "Falha ao consultar de Log do Erro. Detalhes: Registro não encontrado.";
