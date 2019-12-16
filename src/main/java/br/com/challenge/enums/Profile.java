@@ -3,8 +3,8 @@ package br.com.challenge.enums;
 
 public enum Profile {
 
-    ADMIN(1, "ROLE_ADMIN"),
-    USER(2, "ROLE_USER");
+    ADMIN(0, "ROLE_ADMIN"),
+    USER(1, "ROLE_USER");
 
     private int cod;
     private String description;

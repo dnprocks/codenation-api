@@ -2,9 +2,9 @@ package br.com.challenge.enums;
 
 public enum ErrorLevel {
 
-    ERROR(1, "ERROR"),
-    WARNING(2, "WARNING"),
-    DEBUG(3, "DEBUG");
+    ERROR(0, "ERROR"),
+    WARNING(1, "WARNING"),
+    DEBUG(2, "DEBUG");
 
     private int cod;
     private String description;
