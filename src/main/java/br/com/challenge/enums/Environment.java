@@ -2,9 +2,9 @@ package br.com.challenge.enums;
 
 public enum Environment {
 
-    PROD(1, "PROD"),
-    HML(2, "HML"),
-    DEV(3, "DEV");
+    PROD(0, "PROD"),
+    HML(1, "HML"),
+    DEV(2, "DEV");
 
     private int cod;
     private String description;

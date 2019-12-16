@@ -1,5 +1,6 @@
 package br.com.challenge.endpoints;
 
+import br.com.challenge.dto.LogErrorCountDTO;
 import br.com.challenge.dto.LogErrorDTO;
 import br.com.challenge.entity.LogError;
 import br.com.challenge.service.impl.LogErrorService;
@@ -10,6 +11,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
+import java.util.List;
 
 @RestController
 @RequestMapping("logerrors")
@@ -21,6 +23,9 @@ public class LogErrorResource {
     @Autowired
     private HttpServletRequest request;
 
+    /**
+     * A consulta por Id considera o id do usuário logado na pesquisa
+     * **/
     @GetMapping("/{id}")
     @ResponseStatus(HttpStatus.OK)
     public LogError getLogErrors(@PathVariable Long id) {
@@ -28,18 +33,34 @@ public class LogErrorResource {
         return logErrorService.getLogError(id);
     }
 
+    /**
+     * A consulta sem filtro considera o id do usuário logado na pesquisa
+     * **/
     @GetMapping
     @ResponseStatus(HttpStatus.OK)
     public Page<LogError> getLogErrors(Pageable pageable) {
 
-        return logErrorService.getLogErrors(pageable);
+        return logErrorService.getLogErrors("", pageable);
     }
 
+    /**
+     * A consulta com filtro considera o id do usuário logado na pesquisa
+     * **/
     @GetMapping(params = { "filter" })
     @ResponseStatus(HttpStatus.OK)
     public Page<LogError> getLogErrors(@RequestParam("filter") String filter, Pageable pageable) {
 
         return logErrorService.getLogErrors(filter, pageable);
+    }
+
+    /**
+     * A consulta da quantidade de erros por ambiente considera o id do usuário logado na pesquisa
+     * **/
+    @GetMapping("/count")
+    @ResponseStatus(HttpStatus.OK)
+    public List<LogErrorCountDTO> getCountLogErrorByEnvironment() {
+
+        return logErrorService.getEnvironmentCountLogError();
     }
 
     @PostMapping
