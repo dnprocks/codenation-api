@@ -16,6 +16,8 @@ public interface LogErrorServiceInterface {
 
     Page<LogError> getLogErrors(String filter, Pageable pageable);
 
+    Page<LogError> getLogErrorsByEnvironment(String environmentDescription, Pageable pageable);
+
     List<LogErrorCountDTO> getEnvironmentCountLogError();
 
     LogError saveLogError(LogErrorDTO logError, String requestIp);

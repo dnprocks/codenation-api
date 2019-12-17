@@ -28,11 +28,28 @@ public enum Environment {
         throw new IllegalArgumentException("Invalid id: " + cod);
     }
 
+    public static Environment toEnum(String description) {
+
+        if (description == null || description.isEmpty()) {
+            return null;
+        }
+
+        for (Environment environment : Environment.values()) {
+            if (description.equals(environment.getDescription())) {
+                return environment;
+            }
+        }
+
+        throw new IllegalArgumentException("Invalid description: " + description);
+    }
+
     public int getCod() {
+
         return cod;
     }
 
     public String getDescription() {
+
         return description;
     }
 }
