@@ -4,6 +4,7 @@ import br.com.challenge.dto.LogErrorCountDTO;
 import br.com.challenge.dto.LogErrorDTO;
 import br.com.challenge.entity.LogError;
 import br.com.challenge.entity.Users;
+import br.com.challenge.enums.Environment;
 import br.com.challenge.repository.LogErrorRepository;
 import br.com.challenge.repository.UsersRepository;
 import br.com.challenge.service.interfaces.LogErrorServiceInterface;
@@ -51,6 +52,18 @@ public class LogErrorService implements LogErrorServiceInterface {
         else {
             return logErrorRepository.findAllNonFiledUserLogErrorWithGenericFilter(getAuthenticadedUserId(), false, genericFilter, pageable);
         }
+    }
+
+    @Override
+    public Page<LogError> getLogErrorsByEnvironment(String environmentDescription, Pageable pageable) {
+
+        if (environmentDescription == null || environmentDescription.isEmpty()) {
+            throw new IllegalArgumentException("Descrição inválida");
+        }
+
+        int environment = Environment.toEnum(environmentDescription).getCod();
+
+        return logErrorRepository.findByUsersIdEnvironment(getAuthenticadedUserId(), environment, pageable);
     }
 
     @Override

@@ -54,6 +54,16 @@ public class LogErrorResource {
     }
 
     /**
+     * A consulta por ambiente considera o id do usuário logado na pesquisa
+     * **/
+    @GetMapping(params = { "environment" })
+    @ResponseStatus(HttpStatus.OK)
+    public Page<LogError> getLogErrorsByEnvironment(@RequestParam("environment") String environment, Pageable pageable) {
+
+        return logErrorService.getLogErrorsByEnvironment(environment, pageable);
+    }
+
+    /**
      * A consulta da quantidade de erros por ambiente considera o id do usuário logado na pesquisa
      * **/
     @GetMapping("/count")

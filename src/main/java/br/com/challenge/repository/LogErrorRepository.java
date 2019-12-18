@@ -26,6 +26,11 @@ public interface LogErrorRepository extends JpaRepository<LogError, Long> {
             nativeQuery = true)
     Page<LogError> findAllNonFiledUserLogError(Long usersId, boolean filed, Pageable pageable);
 
+    @Query(value = "SELECT * FROM LOG_ERROR WHERE users_id = ?1 AND environment = ?2",
+            countQuery = "SELECT count(*) FROM LOG_ERROR WHERE users_id = ?1 AND environment = ?2",
+            nativeQuery = true)
+    Page<LogError> findByUsersIdEnvironment(Long usersId, int environmentCod, Pageable pageable);
+
     @Query(value = "SELECT * FROM LOG_ERROR WHERE users_id = ?1 AND filed = ?2 AND (title LIKE %?3% OR details LIKE %?3% OR request_ip LIKE %?3%)",
             countQuery = "SELECT count(*) FROM LOG_ERROR WHERE users_id = ?1 AND filed = ?2 AND (title LIKE %?3% OR details LIKE %?3% OR request_ip LIKE %?3%)",
             nativeQuery = true)
